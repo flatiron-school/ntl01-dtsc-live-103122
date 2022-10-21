@@ -6,12 +6,12 @@
 
 2. Then clone your fork down to your local computer
 ```
-git clone https://github.com/[yourusername]/[reponame].git
+git clone https://github.com/[yourusername]/ntl01-dtsc-live-103122.git.git
 ```
 
 3. Add the `/flatiron-school/` version as the `upstream` (to pull future changes)
 ```
-git remote add upstream https://github.com/flatiron-school/[reponame].git
+git remote add upstream https://github.com/flatiron-school/ntl01-dtsc-live-103122.git
 ```
 
 4. You can make changes to the notebooks now! Remember to push your changes to your forked version of the repo (to put your local changes up online):

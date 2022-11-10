@@ -1,56 +1,90 @@
-# Pandas Data Cleaning Checkpoint
+# Structured Query Language (SQL) Checkpoint
 
-This checkpoint is designed to test your understanding of the content from the Pandas Data Cleaning Cumulative Lab.
+This checkpoint is designed to test your understanding of writing queries in the Structured Querying Language (SQL).
 
-Specifically, this will cover:
+Specifically, this checkpoint will cover:
 
-* Using pandas to filter data
-* Using pandas to handle missing values
-* Using matplotlib to create a graph using data from a dataframe
+* Reading an Entity Relationship Diagram
+* Writing a query to return specific columns from a SQL database
+* Writing a query to filter the rows from a SQL database
+* Sorting observations using SQL
+* Joining tables using SQL 
 
-## Your Task: Analyze Superhero Eye Color
+## Data Understanding
 
-### Data Understanding
+In this repository under the file path `data/Northwind.sqlite` there is a SQLite database file containing information about the fictional trading company "Northwind Traders".
 
-In this repository under the file path `data/heroes_information.csv` there is a CSV file containing information about various characters from superhero media properties.
+The tables of interest for this checkpoint will be:
 
-The features of interest for this analysis will be:
+`Product`: A table containing information about products sold by Northwind Traders.
 
-`name`: The name (or AKA) of the character
+`Order`: A table containing high level information about an order submitted to Northwind Traders.
 
-`Eye color`: The eye color of the character
+`Shipper`: A table containing information about the shipping companies Northwind Traders employ to handle the shipping of their products.
 
-`Alignment`: "good", "bad", or "neutral". For the purposes of this analysis, we will only consider those with "good" alignment to be "superheroes"
 
-### Requirements
+## Requirements
 
-#### 1. Filter Data to Relevant Columns
+#### 1. Select an entire table.
 
-#### 2. Filter Data to Relevant Rows
+#### 2. Select all columns. Filter the rows.
 
-#### 3. Drop Rows with Missing Values
+#### 3. Select a single column. Filter the rows using two conditions.
 
-#### 4. Find the Top 5 Most Common Eye Colors
+#### 4. Sort in descending order. Return the first five rows.
 
-#### 5. Plot a Bar Chart of Eye Colors
+#### 5. Join two tables. Filter the rows.
 
-### Setup
 
-In the cell below we import the relevant libraries, open up the CSV file as a dataframe called `df`, and convert cells containing `-` into cells containing `NaN` (because `-` was used to represent missing data in the original dataset).
+## Setup
 
-***Hint:*** If you ever accidentally drop data that you didn't mean to drop, you can come back to this cell and re-run it to load a fresh copy of the data. Before submission, make sure you restart the kernel and run all of the cells to make sure that everything works in order.
+This checkpoint will test the resulting data each of your SQL queries generate. For each requirement, your query should be written as a string, and assigned to the requested variable name. The tests do not inspect the casing or formatting of your SQL query. 
+
+In the cell below we import relevant libraries.
 
 
 ```python
 # Run this cell without changes
+import sqlite3
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+```
 
-df = pd.read_csv("heroes_information.csv", index_col=0)
-df.replace("-", np.nan, inplace=True)
+In the cell below we... 
+- Open up a connection to the SQLite database and store the connection in a variable called `conn`
+- Initialize a SQLite cursor object with the variable name `cursor`.
 
-df
+
+```python
+# Run this cell without changes
+northwind_path = 'Northwind.sqlite'
+
+# Open up a connection
+conn = sqlite3.connect(northwind_path)
+# Initialize a cursor
+cursor = conn.cursor()
+```
+
+**Below is an Entity Relationship Diagram for the Northwind Database**
+
+> The text is quite small in the below image. Here is a [link](./Northwind_ERD.png) to the raw image file, where the text is slightly larger.
+
+![Northwind ERD](Northwind_ERD.png)
+
+### Table Names
+
+Below, we use `pd.read_sql` to output the table names in the SQLite database. 
+
+*Please note:* the table names in the entity relationship diagram above do not perfectly match the names of the actual tables within the database. When writing your queries, you should use the table names listed below.
+
+
+```python
+# Run this cell without changes
+table_name_query = """SELECT name 
+                      AS 'Table Names' 
+                      FROM sqlite_master 
+                      WHERE type='table';"""
+
+pd.read_sql(table_name_query, conn)
 ```
 
 
@@ -74,303 +108,208 @@ df
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>name</th>
-      <th>Gender</th>
-      <th>Eye color</th>
-      <th>Race</th>
-      <th>Hair color</th>
-      <th>Height</th>
-      <th>Publisher</th>
-      <th>Skin color</th>
-      <th>Alignment</th>
-      <th>Weight</th>
+      <th>Table Names</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>A-Bomb</td>
-      <td>Male</td>
-      <td>yellow</td>
-      <td>Human</td>
-      <td>No Hair</td>
-      <td>203.0</td>
-      <td>Marvel Comics</td>
-      <td>NaN</td>
-      <td>good</td>
-      <td>441.0</td>
+      <td>Employee</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>Abe Sapien</td>
-      <td>Male</td>
-      <td>blue</td>
-      <td>Icthyo Sapien</td>
-      <td>No Hair</td>
-      <td>191.0</td>
-      <td>Dark Horse Comics</td>
-      <td>blue</td>
-      <td>good</td>
-      <td>65.0</td>
+      <td>Category</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Abin Sur</td>
-      <td>Male</td>
-      <td>blue</td>
-      <td>Ungaran</td>
-      <td>No Hair</td>
-      <td>185.0</td>
-      <td>DC Comics</td>
-      <td>red</td>
-      <td>good</td>
-      <td>90.0</td>
+      <td>Customer</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>Abomination</td>
-      <td>Male</td>
-      <td>green</td>
-      <td>Human / Radiation</td>
-      <td>No Hair</td>
-      <td>203.0</td>
-      <td>Marvel Comics</td>
-      <td>NaN</td>
-      <td>bad</td>
-      <td>441.0</td>
+      <td>Shipper</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>Abraxas</td>
-      <td>Male</td>
-      <td>blue</td>
-      <td>Cosmic Entity</td>
-      <td>Black</td>
-      <td>-99.0</td>
-      <td>Marvel Comics</td>
-      <td>NaN</td>
-      <td>bad</td>
-      <td>-99.0</td>
+      <td>Supplier</td>
     </tr>
     <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
+      <th>5</th>
+      <td>Order</td>
     </tr>
     <tr>
-      <th>729</th>
-      <td>Yellowjacket II</td>
-      <td>Female</td>
-      <td>blue</td>
-      <td>Human</td>
-      <td>Strawberry Blond</td>
-      <td>165.0</td>
-      <td>Marvel Comics</td>
-      <td>NaN</td>
-      <td>good</td>
-      <td>52.0</td>
+      <th>6</th>
+      <td>Product</td>
     </tr>
     <tr>
-      <th>730</th>
-      <td>Ymir</td>
-      <td>Male</td>
-      <td>white</td>
-      <td>Frost Giant</td>
-      <td>No Hair</td>
-      <td>304.8</td>
-      <td>Marvel Comics</td>
-      <td>white</td>
-      <td>good</td>
-      <td>-99.0</td>
+      <th>7</th>
+      <td>OrderDetail</td>
     </tr>
     <tr>
-      <th>731</th>
-      <td>Yoda</td>
-      <td>Male</td>
-      <td>brown</td>
-      <td>Yoda's species</td>
-      <td>White</td>
-      <td>66.0</td>
-      <td>George Lucas</td>
-      <td>green</td>
-      <td>good</td>
-      <td>17.0</td>
+      <th>8</th>
+      <td>CustomerCustomerDemo</td>
     </tr>
     <tr>
-      <th>732</th>
-      <td>Zatanna</td>
-      <td>Female</td>
-      <td>blue</td>
-      <td>Human</td>
-      <td>Black</td>
-      <td>170.0</td>
-      <td>DC Comics</td>
-      <td>NaN</td>
-      <td>good</td>
-      <td>57.0</td>
+      <th>9</th>
+      <td>CustomerDemographic</td>
     </tr>
     <tr>
-      <th>733</th>
-      <td>Zoom</td>
-      <td>Male</td>
-      <td>red</td>
-      <td>NaN</td>
-      <td>Brown</td>
-      <td>185.0</td>
-      <td>DC Comics</td>
-      <td>NaN</td>
-      <td>bad</td>
-      <td>81.0</td>
+      <th>10</th>
+      <td>Region</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Territory</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>EmployeeTerritory</td>
     </tr>
   </tbody>
 </table>
-<p>734 rows × 10 columns</p>
 </div>
 
 
 
-## 1. Filter Data to Relevant Columns
+## 1. Select an entire table.
 
-Modify `df` so that it only contains the relevant columns for our analysis. These columns are listed as a list of strings for your convenience below.
+In a string variable named `first_query`, write a SQL query that returns all rows and columns from the `product` table.
 
-When you are finished with this question, `df` should have the same number of rows as before (734 rows) but only 3 columns.
+When passed into `pd.read_sql` this query should return a dataframe with a head that looks like this:
 
-***Hint:*** if you are seeing the correct output but the test is failing, make sure that you are actually modifying `df`, either by reassigning it (`df = `...) or by using `inplace=True` (where applicable).
-
-
-```python
-# Run this cell without changes
-relevant_columns = [
-    "name",
-    "Eye color",
-    "Alignment"
-]
-```
+|    |   Id | ProductName                  |   SupplierId |   CategoryId | QuantityPerUnit     |   UnitPrice |   UnitsInStock |   UnitsOnOrder |   ReorderLevel |   Discontinued |
+|---:|-----:|:-----------------------------|-------------:|-------------:|:--------------------|------------:|---------------:|---------------:|---------------:|---------------:|
+|  0 |    1 | Chai                         |            1 |            1 | 10 boxes x 20 bags  |       18.00    |             39 |              0 |             10 |              0 |
+|  1 |    2 | Chang                        |            1 |            1 | 24 - 12 oz bottles  |       19.00    |             17 |             40 |             25 |              0 |
+|  2 |    3 | Aniseed Syrup                |            1 |            2 | 12 - 550 ml bottles |       10.00    |             13 |             70 |             25 |              0 |
+|  3 |    4 | Chef Anton's Cajun Seasoning |            2 |            2 | 48 - 6 oz jars      |       22.00    |             53 |              0 |              0 |              0 |
+|  4 |    5 | Chef Anton's Gumbo Mix       |            2 |            2 | 36 boxes            |       21.35 |              0 |              0 |              0 |              1 |
 
 
 ```python
 # CodeGrade step1
 # Replace None with appropriate code
 
-df = None
+first_query = None
 ```
 
-## 2. Filter Data to Relevant Rows
 
-Now, modify `df` so that it only contains rows where `Alignment` is `"good"`.
+```python
+# Use the line below to check your query's output
+pd.read_sql(first_query, conn).head()
+```
 
-When you are finished with this question, `df` should still have 3 columns, but fewer rows.
+## 2. Select all columns. Filter the rows.
+
+In a string variable named `second_query`, write a SQL query that returns all columns and rows from the `Product` table where `discontinued` has a value of `1`.
+
+When passed into `pd.read_sql` the query's resulting dataframe should look like this:
+
+|    |   Id | ProductName                   |   SupplierId |   CategoryId | QuantityPerUnit      |   UnitPrice |   UnitsInStock |   UnitsOnOrder |   ReorderLevel |   Discontinued |
+|---:|-----:|:------------------------------|-------------:|-------------:|:---------------------|------------:|---------------:|---------------:|---------------:|---------------:|
+|  0 |    5 | Chef Anton's Gumbo Mix        |            2 |            2 | 36 boxes             |       21.35 |              0 |              0 |              0 |              1 |
+|  1 |    9 | Mishi Kobe Niku               |            4 |            6 | 18 - 500 g pkgs.     |       97 .00   |             29 |              0 |              0 |              1 |
+|  2 |   17 | Alice Mutton                  |            7 |            6 | 20 - 1 kg tins       |       39.00    |              0 |              0 |              0 |              1 |
+|  3 |   24 | Guaraná Fantástica            |           10 |            1 | 12 - 355 ml cans     |        4.50  |             20 |              0 |              0 |              1 |
+|  4 |   28 | Rössle Sauerkraut             |           12 |            7 | 25 - 825 g cans      |       45.60  |             26 |              0 |              0 |              1 |
+|  5 |   29 | Thüringer Rostbratwurst       |           12 |            6 | 50 bags x 30 sausgs. |      123.79 |              0 |              0 |              0 |              1 |
+|  6 |   42 | Singaporean Hokkien Fried Mee |           20 |            5 | 32 - 1 kg pkgs.      |       14.00    |             26 |              0 |              0 |              1 |
+|  7 |   53 | Perth Pasties                 |           24 |            6 | 48 pieces            |       32.80  |              0 |              0 |              0 |              1 |
 
 
 ```python
 # CodeGrade step2
 # Replace None with appropriate code
 
-df = None
+second_query = None
 ```
-
-## 3. Drop Rows with Missing Values
-
-Now that all rows in the dataset are superheroes (alignment of "good"), note that we are missing the eye color for some of them:
 
 
 ```python
-# Run this cell without changes
-df.info()
+# Use the line below to check your query's output
+pd.read_sql(second_query, conn)
 ```
 
-    <class 'pandas.core.frame.DataFrame'>
-    Int64Index: 496 entries, 0 to 732
-    Data columns (total 3 columns):
-     #   Column     Non-Null Count  Dtype 
-    ---  ------     --------------  ----- 
-     0   name       496 non-null    object
-     1   Eye color  378 non-null    object
-     2   Alignment  496 non-null    object
-    dtypes: object(3)
-    memory usage: 15.5+ KB
+## 3. Select a single column. Filter the rows using two conditions.
 
+In a string variable named `third_query`, write a SQL query that returns the name of a product if the product is not in stock and is not discontinued.
 
-Modify `df` so that it only contains rows where `Eye color` is not missing (i.e. is not NaN).
+When passed into `pd.read_sql` the query's resulting dataframe should look like this:
 
-Again, when you are finished with this question, `df` should still have 3 columns, but fewer rows again.
+|    | ProductName       |
+|---:|:------------------|
+|  0 | Gorgonzola Telino |
 
 
 ```python
 # CodeGrade step3
 # Replace None with appropriate code
 
-df = None
+third_query = None
 ```
 
-## 4. Find the Top 5 Most Common Eye Colors
 
-Create a variable `top_eye_colors` that represents the top 5 most common eye colors in the dataset. Then create a variable `top_eye_color_counts` that represents the corresponding frequencies.
+```python
+# Use the line below to check your query's output
+pd.read_sql(third_query, conn)
+```
 
-`top_eye_colors` should be a list of strings, ordered from the most common to the 5th most common. `top_eye_color_counts` should be a list of integers, ordered from the highest count to the 5th highest.
+## 4. Sort in descending order. Return the first five rows.
 
-***Hint:*** If you have a list-like data structure (e.g. a pandas series or NumPy array), you can easily convert it to a Python list using `list()`.
+In a string variable named `fourth_query`, write a SQL query that returns the product name and unit price.
+
+- Order by unit price in descending order. 
+- Use a SQL command so only the first five rows are queried.
+
+When passed into `pd.read_sql`, this query's resulting dataframe should look like this:
+
+|    | ProductName             |   UnitPrice |
+|---:|:------------------------|------------:|
+|  0 | Côte de Blaye           |      263.50 |
+|  1 | Thüringer Rostbratwurst |      123.79 |
+|  2 | Mishi Kobe Niku         |       97.00 |
+|  3 | Sir Rodney's Marmalade  |       81.00 |
+|  4 | Carnarvon Tigers        |       62.50 |
 
 
 ```python
 # CodeGrade step4
 # Replace None with appropriate code
 
-top_eye_colors = None
-top_eye_color_counts = None
+fourth_query = None
 ```
 
-## 5. Plot a Bar Chart of Popular Eye Colors
 
-Create a matplotlib figure called `fig` containing a labeled bar chart with the number of superheroes who have each of the top 5 most popular eye colors (as encoded in `top_eye_colors` and `top_eye_color_counts`). You can find bar chart documentation [here](https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.bar.html#matplotlib.axes.Axes.bar).
-
-### Alternative Data
-
-If you were not able to complete the previous question, you can use these hard-coded eye colors:
-
-```
-red
-orange
-yellow
-green
-blue
+```python
+# Use the line below to check your query's output
+pd.read_sql(fourth_query, conn)
 ```
 
-And these hard-coded counts:
+## 5. Join two tables. Filter the rows.
 
-```
-46
-2
-19
-73
-167
-```
+In a string variable named `fifth_query`, write a SQL query that returns the name and phone number for shippers who have charged more than $1000 for an order.
 
-***Note:*** there is no need to use the above values if you were able to complete the previous question and you have valid `top_eye_colors` and `top_eye_color_counts` variables.
+**Hint:** 
+- "freight" represents shipping cost.
+- For this question, the word "order" is both a table name AND a SQL command. To help SQL understand that you are referencing the table `order` in the database, you will need to wrap the word `order` in quotation marks.
 
-### Starter Code
+When passed into `pd.read_sql`, the query's resulting dataframe should look like this:
 
-The starter code creates a figure called `fig` and axes called `ax`. Use those variables in your solution in order to pass the test.
-
-**DO NOT** use the `df.plot` interface to answer this question. Use the `fig` and `ax` variables provided.
-
-Set the *axes* title to `bar_chart_title` specified below.
+|    | CompanyName      | Phone          |
+|---:|:-----------------|:---------------|
+|  0 | Federal Shipping | (503) 555-9931 |
 
 
 ```python
 # CodeGrade step5
+# Replace None with appropriate code
 
-bar_chart_title = "Top 5 Most Common Superhero Eye Colors"
+fifth_query = None
+```
 
-fig, ax = plt.subplots()
+
+```python
+# Use the line below to check your query's output
+pd.read_sql(fifth_query, conn)
 ```
 
 

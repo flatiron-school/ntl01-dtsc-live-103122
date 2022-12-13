@@ -17,27 +17,9 @@ You'll be working with following dictionaries to create the `Pokemon` objects
 
 ```python
 # Run this cell without changes
-bulbasaur_data = {
-    "name": 'bulbasaur',
-    "weight": 69,
-    "height": 7,
-    "base_experience": 64,
-    "types": ["grass", "poison"]
-}
-charmander_data = {
-    "name": 'charmander',
-    "weight": 85,
-    "height": 6,
-    "base_experience": 62,
-    "types": ["fire"]
-}
-squirtle_data = {
-    "name": 'squirtle',
-    "weight": 90,
-    "height": 5,
-    "base_experience": 63,
-    "types": ["water"]
-}
+bulbasaur_data = {"name": 'bulbasaur', "weight": 69, "height": 7, "base_experience": 64, "types": ["grass", "poison"]}
+charmander_data = {"name": 'charmander', "weight": 85, "height": 6, "base_experience": 62, "types": ["fire"]}
+squirtle_data = {"name": 'squirtle', "weight": 90, "height": 5, "base_experience": 63, "types": ["water"]}
 ```
 
 ### 1. Creating a Class
@@ -50,26 +32,19 @@ take in `data` as a parameter.
 With the idea that one of the dictionaries above will be passed in as `data`, 
 assign these specific attributes within the `__init__` method:
  
-* `name` : value from the 'name' key of the dictionary passed in `data`
-* `weight`: value from the 'weight' key of the dictionary passed in `data`
-* `height`: value from the 'height' key of the dictionary passed in `data`
+* `name` : values from the 'name' key of the dictionary passed in `data`
+* `weight`: values from the 'weight' key of the dictionary passed in `data`
+* `height`values from the 'height' key of the dictionary passed in `data`
 
 
 ```python
-# Create your class below with the correct syntax, including an __init__ method.
-
-# your code here
-raise NotImplementedError
+# CodeGrade step1
+# Create your class in this cell.  Remember to use the correct syntax, and include an __init__ method!
 ```
 
 
 ```python
-# PUT ALL WORK FOR THE ABOVE QUESTION ABOVE THIS CELL
-# THIS UNALTERABLE CELL CONTAINS HIDDEN TESTS
-
-# Pokemon should be a class that exists in this namespace
 assert type(Pokemon) == type
-
 ```
 
     
@@ -79,17 +54,24 @@ Using the `bulbasaur_data`, `charmander_data` and `squirtle_data` variables, cre
 
 
 ```python
-# Replace None with appropriate code
+# CodeGrade step2
+# Your code here
+bulbasaur = pass
+charmander = pass
+squirtle = pass
+```
 
-bulbasaur = None
-charmander = None
-squirtle = None
 
-# your code here
-raise NotImplementedError
+```python
+'''
+run this cell to test and check your code
 
-# This code will test your implementation. Make sure the values printed
-# match the dictionaries above!
+make sure that the printed information matches the dictionaries above
+
+you may need to change the attribute variable names in the print statement 
+if you named them differently!
+'''
+
 def print_pokeinfo(pkmn):
     print('Name: ' + pkmn.name)
     print('Weight: ' + str(pkmn.weight))
@@ -101,15 +83,28 @@ print_pokeinfo(charmander)
 print_pokeinfo(squirtle)
 ```
 
+    Name: bulbasaur
+    Weight: 69
+    Height: 7
+    
+    
+    Name: charmander
+    Weight: 85
+    Height: 6
+    
+    
+    Name: squirtle
+    Weight: 90
+    Height: 5
+    
+    
+
+
 
 ```python
-# PUT ALL WORK FOR THE ABOVE QUESTION ABOVE THIS CELL
-# THIS UNALTERABLE CELL CONTAINS HIDDEN TESTS
-
 assert type(bulbasaur) == Pokemon
 assert type(charmander) == Pokemon
 assert type(squirtle) == Pokemon
-
 ```
 
 ### 3. Update an instance attribute
@@ -118,28 +113,21 @@ Using the charmander instance, increase the weight attribute by 5.
 
 
 ```python
-# your code here
-raise NotImplementedError
-```
-
-
-```python
-# PUT ALL WORK FOR THE ABOVE QUESTION ABOVE THIS CELL
-# THIS UNALTERABLE CELL CONTAINS HIDDEN TESTS
+# CodeGrade step3
 
 ```
 
 ### 4. Instance Methods
 
-Re-write the class `Pokemon` below, so that it has an instance method called `bmi` that calculates the BMI of a Pokemon.
+Write an instance method called `bmi` within the class `Pokemon` defined above to calculate the BMI of a Pokemon. 
 
 BMI is defined by the formula: $\frac{weight}{height^{2}}$ 
 
 The BMI should be calculated with weight in **kilograms** and height in **meters**. 
 
-The height and weight data of Pokemon from the dictionaries above is in **decimeters** and **hectograms**, respectively. 
+The height and weight data of Pokemon from the API is in **decimeters** and **hectograms**, respectively. 
 
-You will have to convert the given values of height and weight to kilograms and meters to make the BMI calculations correct.
+You will have to convert the given values of height and weight to kilgrams and meters to make the BMI calculations correct.
 
 For your convenience, here are the conversions:
 
@@ -148,7 +136,7 @@ For your convenience, here are the conversions:
 1 hectogram = 0.1 kilograms
 ```
 
-**Don't forget**: since you are changing the `Pokemon` class, you will have to create **new objects** of this **new class**. 
+**Don't forget**: since you change the `Pokemon` class, you will have to create **new objects** of this **new class**. 
 
 If you use the objects created by the first class you wrote, they will not have the `bmi` instance!
 
@@ -157,30 +145,36 @@ You can assign these new objects the same names as you assigned the old ones:
 
 
 ```python
-# Define the new Pokemon class here
-
-# Replace None with appropriate code
-bulbasaur = None
-charmander = None
-squirtle = None
-
-# your code here
-raise NotImplementedError
-
-# This code will test your implementation
-print(bulbasaur.bmi()) 
-print(charmander.bmi()) 
-print(squirtle.bmi()) 
+# CodeGrade step4
+# Your work here
 ```
 
 
 ```python
-# PUT ALL WORK FOR THE ABOVE QUESTION ABOVE THIS CELL
-# THIS UNALTERABLE CELL CONTAINS HIDDEN TESTS
+# run this cell to test and check your code
 
+# don't forget to create new objects after adding the `bmi` instance to the `Pokemon` class!
+
+print(bulbasaur.bmi()) # you should get 14.08
+print(charmander.bmi()) # you should get 23.61
+print(squirtle.bmi()) # you should get 36.0
+```
+
+    14.081632653061222
+    23.611111111111104
+    36.0
+
+
+
+```python
 # bulbasaur.bmi should be a method on an instance of type Pokemon
 import types
 assert type(bulbasaur.bmi) == types.MethodType
 # bulbasaur.bmi() should return a floating point number
 assert type(bulbasaur.bmi()) == float
+```
+
+
+```python
+
 ```
